@@ -1,16 +1,19 @@
 {
   "dependencies": {
+    "body-parser": "^1.20.2",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "mysql": "^2.18.1",
-    "typeorm": "^0.3.15"
+    "mysql2": "^3.2.3",
+    "nodemon": "^2.0.22",
+    "sequelize": "^6.31.0",
+    "sqlite3": "^5.1.6"
   },
   "name": "be-assignment-website",
   "version": "1.0.0",
   "description": "assignment website backend",
+  "type": "module",
   "main": "index.js",
-  "devDependencies": {},
-  "type":"module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
