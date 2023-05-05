@@ -3,7 +3,8 @@ import { sequelize } from '../database/database.js';
 
 const Blog = sequelize.define('Blog', {
   title: DataTypes.STRING,
-  : DataTypes.STRING,
+  image: DataTypes.TEXT('long'),
+  description:DataTypes.STRING
 });
 
-export {User}
+export {Blog}
