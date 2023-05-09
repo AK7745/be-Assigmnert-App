@@ -3,10 +3,16 @@ import { sequelize } from '../database/database.js';
 
 const Blog = sequelize.define('Blog', {
   title: DataTypes.STRING,
-  thumbnail_img: DataTypes.STRING,
+  thumbnail_img: {
+    type:DataTypes.STRING,
+    allowNull:true
+  },
   description:DataTypes.STRING,
   author_name:DataTypes.STRING,
-  banner:DataTypes.STRING,
+  banner:{
+    type:DataTypes.STRING,
+    allowNull:true
+  },
   like:DataTypes.STRING,
   meta_description:DataTypes.STRING,
   meta_title:DataTypes.STRING,

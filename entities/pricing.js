@@ -1,7 +1,6 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
-import Level from "./level.js";
-import Days from "./days.js";
+
 
 const Pricing=sequelize.define('Pricing',{
 
@@ -11,13 +10,5 @@ const Pricing=sequelize.define('Pricing',{
         defaultValue:false
     }
 })
-Pricing.belongsTo(Level, {
-    foreignKey: "pricingId",
-    as: "pricing",
-  })
-
-  Pricing.belongsTo(Days, {
-    foreignKey: "pricingId",
-    as: "pricing",
-  })  
+  
 export default Pricing

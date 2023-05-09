@@ -13,3 +13,37 @@ export const mailer = async (req, res) => {
     res.status(500).json({ error: "Failed to send email" });
   }
 };
+
+export const getAllDetails = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1; 
+    const limit = parseInt(req.query.limit) || 15; 
+    const offset = (page - 1) * limit; 
+
+    const { count, rows } = await ContactUs.findAndCountAll({
+      where: {
+        deleted: false
+      },
+      order: [['createdAt', 'ASC']],
+      limit,
+      offset
+    });
+
+    res.status(200).json({
+      message: 'All details fetched successfully',
+      data: {
+        totalItems: count,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page,
+        items: rows
+      }
+    });
+  } catch (error) {
+    console.error('Error while fetching details:', error);
+    res.status(500).json({
+      message: 'Internal server error'
+    });
+  }
+};
+
+

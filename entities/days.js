@@ -9,5 +9,5 @@ const Days = sequelize.define("Days", {
     defaultValue: false,
   },
 });
-Days.hasMany(Pricing,{as:'days'});
+
 export default Days;

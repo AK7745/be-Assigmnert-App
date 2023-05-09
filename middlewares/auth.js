@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import Jwt from "jsonwebtoken";
-const secret =
-  "e9ee56966394b83fe6bdcafe3e15292174375b1175d4abe42442f46e641c19e0d4f42a63096abb6f6884f501d4c98aa7fb6862987bfa80a0394c6065fbf1c126";
+import { WEB_TOKEN_SECRET } from "../constants.js";
+const secret = WEB_TOKEN_SECRET;
 
 export const generateToken = (email) => {
   const payload = { email };
