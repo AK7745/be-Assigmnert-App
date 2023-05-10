@@ -1,5 +1,5 @@
 import Sequelize from'sequelize';
-export const sequelize = new Sequelize('assignmentwebsite', 'root', 'root', {
+export const sequelize = new Sequelize('testing', 'root', 'root', {
   host: 'localhost',
   dialect:  'mysql', 
   
@@ -14,11 +14,11 @@ export const connectDB = async ()=>{
   console.error('Unable to connect to the database:', error);
 }}
 
-// sequelize.sync({alter:true})
-//   .then(() => {
-//     console.log('Tables synced successfully');
-//   })
-//   .catch((error) => {
-//     console.error('Error syncing tables: ', error);
-//   });
+sequelize.sync({alter:true})
+  .then(() => {
+    console.log('Tables synced successfully');
+  })
+  .catch((error) => {
+    console.error('Error syncing tables: ', error);
+  });
 

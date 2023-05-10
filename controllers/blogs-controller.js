@@ -3,40 +3,43 @@ import fs from "fs";
 import { fileURLToPath } from "url";
 import path, { dirname } from "path";
 
-export const createBlog = async (req, res) => {
-  try {
-    const { title, description } = req.body;
-    console.log("req.body", req.body);
-    console.log("req.body", req.files);
-    const photo = req.file.buffer;
-console.log("photo", photo);
-    const myphoto = Buffer.from(photo).toString("base64");
-    const blog = await Blog.create({
-      title,
-      description,
-      thumbnail_img: myphoto,
-    });
-    res.status(201).json(blog);
-  } catch (error) {
-    res.status(500).json(error);
-  }
-};
+// export const createBlog = async (req, res) => {
+//   try {
+//     const { title, description } = req.body;
+//     console.log("req.body", req.body);
+//     console.log("req.body", req.files);
+//     const photo = req.file.buffer;
+// console.log("photo", photo);
+//     const myphoto = Buffer.from(photo).toString("base64");
+//     const blog = await Blog.create({
+//       title,
+//       description,
+//       thumbnail_img: myphoto,
+//     });
+//     res.status(201).json(blog);
+//   } catch (error) {
+//     res.status(500).json(error);
+//   }
+// };
 
-export const updatedCreateBlog = async (req, res) => {
+export const createBlog = async (req, res) => {
   try { 
-    const { title, description, author_name } = req.body;
-    
-    console.log(req.files['thumbnail_img'][0]['path']);
-    const thumbnailImagePath = req.files['thumbnail_img'][0]['path'];
-    const bannerImagePath = req.files['banner'][0]['path'];  
+    const { title, description, author_name,like,meta_description,meta_title } = req.body;
+    console.log(req.files["banner"][0]["filename"])
+    console.log(req.files['thumbnail_img'][0]['filename']);
+    const thumbnailImagePath = req.files['thumbnail_img'][0]['filename'];
+    const bannerImagePath = req.files['banner'][0]['filename'];  
     const blog = await Blog.create({
       title,
+      thumbnail_img: thumbnailImagePath,
       description,
       author_name,
-      thumbnail_img: thumbnailImagePath,
       banner: bannerImagePath,
+      like,
+      meta_description,
+      meta_title
     });
-    const slug=await formatTitleAndId(blog)
+    const slug= formatTitleAndId(blog)
 const createSlug=await Blog.update(
   {slug},{
     where:{
@@ -66,7 +69,7 @@ export const getSingleBlog = async (req, res) => {
     console.log(id);
     const blog = await Blog.findOne({
       where: { id, 
-      deleted: true
+      deleted: false
       },
     });
     res.status(200).json(blog);

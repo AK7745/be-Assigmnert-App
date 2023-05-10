@@ -1,4 +1,4 @@
-import { DataTypes } from "sequelize";
+import { DataTypes, INTEGER } from "sequelize";
 import { sequelize } from "../database/database.js";
 
 const Level = sequelize.define("Level", {
@@ -7,5 +7,6 @@ const Level = sequelize.define("Level", {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
   },
+ 
 });
 export default Level;
