@@ -1,61 +1,45 @@
 import { Blog } from "../entities/blogs-entity.js";
-import fs from "fs";
-import { fileURLToPath } from "url";
-import path, { dirname } from "path";
-
-// export const createBlog = async (req, res) => {
-//   try {
-//     const { title, description } = req.body;
-//     console.log("req.body", req.body);
-//     console.log("req.body", req.files);
-//     const photo = req.file.buffer;
-// console.log("photo", photo);
-//     const myphoto = Buffer.from(photo).toString("base64");
-//     const blog = await Blog.create({
-//       title,
-//       description,
-//       thumbnail_img: myphoto,
-//     });
-//     res.status(201).json(blog);
-//   } catch (error) {
-//     res.status(500).json(error);
-//   }
-// };
 
 export const createBlog = async (req, res) => {
-  try { 
-    const { title, description, author_name,like,meta_description,meta_title } = req.body;
-    console.log(req.files["banner"][0]["filename"])
-    console.log(req.files['thumbnail_img'][0]['filename']);
-    const thumbnailImagePath = req.files['thumbnail_img'][0]['filename'];
-    const bannerImagePath = req.files['banner'][0]['filename'];  
+  try {
+    const {
+      title,
+      description,
+      author_name,
+      like,
+      meta_description,
+      meta_title,
+    } = req.body;
+    const metaImagePath = req.files["meta_img"][0]["path"];
+    const bannerImagePath = req.files["banner"][0]["path"];
     const blog = await Blog.create({
       title,
-      thumbnail_img: thumbnailImagePath,
+      meta_img: metaImagePath,
       description,
       author_name,
       banner: bannerImagePath,
       like,
       meta_description,
-      meta_title
+      meta_title,
     });
-    const slug= formatTitleAndId(blog)
-const createSlug=await Blog.update(
-  {slug},{
-    where:{
-      id:blog.id
-    }
-  }
-)
-const fetchBlog=await Blog.findOne({
-  where:{
-    id:blog.id,
-    deleted:false
-  }
-})
+    const slug = formatTitleAndId(blog);
+    const createSlug = await Blog.update(
+      { slug },
+      {
+        where: {
+          id: blog.id,
+        },
+      }
+    );
+    const fetchBlog = await Blog.findOne({
+      where: {
+        id: blog.id,
+        deleted: false,
+      },
+    });
     res.status(201).json({
-      message: 'Blog created successfully',
-      data:fetchBlog
+      message: "Blog created successfully",
+      data: fetchBlog,
     });
   } catch (error) {
     console.log(error);
@@ -68,40 +52,17 @@ export const getSingleBlog = async (req, res) => {
     const id = req.params.id;
     console.log(id);
     const blog = await Blog.findOne({
-      where: { id, 
-      deleted: false
-      },
+      where: { id, deleted: false },
     });
-    res.status(200).json(blog);
+    res.status(200).json({
+      message: 'Blog Fetched successfully',
+      data:blog
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json(error.message);
   }
 };
-
-// export const updateBlogInfo = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-    
-// const data=req.body
-//     const blog = await Blog.update(data,{
-//       where:{
-//         id,
-//         deleted: false,
-//       },
-//       returning: true,
-//     }); 
-
-//     if (!blog) {
-//       return res.status(404).json({ error: "Blog not found" });
-//     }
-// console.log(blog)
-//     res.status(200).json({message:`successfully updated`, data:blog});
-//   } catch (error) {
-//     console.log(error)
-//     res.status(500).json(error);
-//   }
-// };
 
 export const updateBlogInfo = async (req, res) => {
   try {
@@ -126,7 +87,9 @@ export const updateBlogInfo = async (req, res) => {
       },
     });
 
-    res.status(200).json({ message: "Successfully updated", data: updatedBlog });
+    res
+      .status(200)
+      .json({ message: "Successfully updated", data: updatedBlog });
   } catch (error) {
     console.log(error);
     res.status(500).json(error);
@@ -134,48 +97,27 @@ export const updateBlogInfo = async (req, res) => {
 };
 
 
-export const updateBlogImage = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { buffer } = req.file;
-
-    const myphoto = Buffer.from(buffer).toString("base64");
-
-    const blog = await Blog.findByIdAndUpdate(
-      id,
-      { image: myphoto },
-      { new: true }
-    );
-
-    if (!blog) {
-      return res.status(404).json({ error: "Blog not found" });
-    }
-
-    res.status(200).json(blog);
-  } catch (error) {
-    res.status(500).json(error);
-  }
-};
 
 export const softDeleteBlog = async (req, res) => {
   try {
     const { id } = req.params;
 
     const blog = await Blog.update(
-      
       { deleted: true },
       {
-        where:{
-          id
-        }
+        where: {
+          id,
+        },
       }
-      );
+    );
 
     if (!blog) {
       return res.status(404).json({ error: "Blog not found" });
     }
 
-    res.status(200).json(blog);
+    res.status(200).json({
+      message: "blog deleted successfully",
+    });
   } catch (error) {
     res.status(500).json(error);
   }
@@ -183,68 +125,98 @@ export const softDeleteBlog = async (req, res) => {
 
 export const getAllBlog = async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1; // Current page number
-    const limit = parseInt(req.query.limit) || 10; // Number of items per page
+    const page = parseInt(req.query.page) || 1; 
+    const limit = parseInt(req.query.limit) || 10; 
 
-    const offset = (page - 1) * limit; // Offset based on the current page and limit
+    const offset = (page - 1) * limit; 
 
     const { count, rows } = await Blog.findAndCountAll({
       where: {
-        deleted: false
+        deleted: false,
       },
-      order: [['createdAt', 'ASC']], // Sort by createdAt field in ascending order
+      order: [["createdAt", "ASC"]], 
       limit,
-      offset
+      offset,
     });
 
     res.status(200).json({
-      message: 'All blogs fetched successfully',
+      message: "All blogs fetched successfully",
       data: {
         totalItems: count,
         totalPages: Math.ceil(count / limit),
         currentPage: page,
-        items: rows
-      }
+        items: rows,
+      },
     });
   } catch (error) {
-    console.error('Error while fetching details:', error);
+    console.error("Error while fetching details:", error);
     res.status(500).json({
-      message: 'Internal server error'
+      message: "Internal server error",
     });
   }
 };
 
 function formatTitleAndId(apiResponse) {
-  // Extract the title and ID from the API response
   const { title, id } = apiResponse;
-
-  // Replace spaces in the title with underscores
-  const formattedTitle = title.replace(/ /g, '-');
-
-  // Concatenate the formatted title, "Pakistan", and ID
+  const formattedTitle = title.replace(/ /g, "-");
   const formattedString = `${formattedTitle}-${id}`;
-
   return formattedString;
 }
 
-export const deleteAllBlogs= async (req, res) => {
+export const deleteAllBlogs = async (req, res) => {
   try {
-    // Delete all blog records
     await Blog.destroy({ where: {} });
-
-    res.status(200).json({ message: 'All blog records deleted successfully.' });
+    res.status(200).json({ message: "All blog records deleted successfully." });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Server Error' });
+    res.status(500).json({ message: "Server Error" });
   }
-}
+};
 
+export const updateBanner = async (req, res) => {
+  try {
+    const bannerImagePath = req.file.path;
+    console.log(bannerImagePath);
+    const id = req.params.id;
+    const banner = await Blog.update(
+      { banner: bannerImagePath },
+      {
+        where: {
+          id,
+          deleted: false,
+        },
+        returning: true,
+      }
+    );
+    res.status(200).json({
+      message: "Banner updated successfully",
+      data: banner,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
-
-
-
-
-
-
-
-
+export const updateMetaImage = async (req, res) => {
+  try {
+    const metaImagePath = req.file.path;
+    console.log(metaImagePath);
+    const id = req.params.id;
+    const banner = await Blog.update(
+      { meta_img: metaImagePath },
+      {
+        where: {
+          id,
+          deleted: false,
+        },
+        returning: true,
+      }
+    );
+    res.status(200).json({
+      message: "Meta image updated successfully",
+      data: banner,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

@@ -1,7 +1,8 @@
 import Sequelize from'sequelize';
-export const sequelize = new Sequelize('testing', 'root', 'root', {
-  host: 'localhost',
-  dialect:  'mysql', 
+import { DATABASENAME, DB_PASS, DB_USER_NAME, DIALECT, HOST } from '../constants.js';
+export const sequelize = new Sequelize(DATABASENAME, DB_USER_NAME, DB_PASS, {
+  host: HOST,
+  dialect:  DIALECT, 
   
   
 });

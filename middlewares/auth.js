@@ -10,7 +10,11 @@ export const generateToken = (email) => {
 };
 
 export const authenticate = (req, res, next) => {
-  const token = req.headers.authorization.split(" ")[1];
+  const token = req?.headers?.authorization?.split(" ")[1];
+  console.log(token);
+  if(!token) {
+    return res.status(401).json({ error:"Please SignIn"})
+  }
   Jwt.verify(token, secret, (err, decoded) => {
     if (err) {
       return res.status(401).json({ message: "Unauthorized" });

@@ -1,10 +1,11 @@
 import nodemailer from 'nodemailer'
+import { USER_EMAIL_NODE_MAILER, USER_PASS_NODE_MAILER,NODE_MAILER_SERVICE } from '../constants.js';
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  service: NODE_MAILER_SERVICE,
   auth: {
-    user: 'abdullahkhan7745@gmail.com',
-    pass: 'blehumwmuszocjuw'
+    user: USER_EMAIL_NODE_MAILER,
+    pass: USER_PASS_NODE_MAILER
   }
 });
 
@@ -12,7 +13,7 @@ const sendFormEmail = async (formData) => {
   try {
     const message = {
       from: formData.email,
-      to: 'abdullahkhan7745@gmail.com',
+      to: USER_EMAIL_NODE_MAILER,
       subject: 'Form Submission',
       html: `
         <h1>Form Submission</h1>

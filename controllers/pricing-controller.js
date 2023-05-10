@@ -1,5 +1,3 @@
-import Days from "../entities/days.js";
-import Level from "../entities/level.js";
 import Pricing from "../entities/pricing.js"
 import { Op } from "sequelize";
 export const getPrice = async (req, res) => {
@@ -41,26 +39,13 @@ export const getPrice = async (req, res) => {
 
 export const createPrice = async (req, res) => {
   try {
-    const { days, level, price } = req.body;
-    console.log("body", req.body);
-    const daysId=await Days.findOne({
-      where:{
-        days,
-        deleted:false
-      }
-    }).then((e)=>e?.id)
-    const levelId=await Level.findOne({
-      where:{
-        level,
-        deleted:false
-      }
-    }).then((e)=>e?.id)
+    const { daysId, levelId, price } = req.body;
+    
     const Price = await Pricing.create({
       price,
       daysId,
       levelId
     });
-    console.log("Price", Price);
     return res.status(201).json(Price);
   } catch (error) {
     console.log(error);

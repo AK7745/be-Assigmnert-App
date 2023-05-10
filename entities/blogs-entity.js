@@ -3,7 +3,7 @@ import { sequelize } from '../database/database.js';
 
 const Blog = sequelize.define('Blog', {
   title: DataTypes.STRING,
-  thumbnail_img: {
+  meta_img: {
     type:DataTypes.STRING,
     allowNull:true
   },
