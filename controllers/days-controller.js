@@ -16,7 +16,6 @@ export const createDays = async (req, res) => {
   export const getDays = async (req, res) => {
     try {
       const result = await Days.findAll({
-        include: [Pricing],
       });
       res.status(200).json(result);
     } catch (error) {

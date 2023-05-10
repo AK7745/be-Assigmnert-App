@@ -8,14 +8,26 @@ const Blog = sequelize.define('Blog', {
     allowNull:true
   },
   description:DataTypes.STRING,
-  author_name:DataTypes.STRING,
+  author_name:{
+    type:DataTypes.STRING,
+    allowNull:true
+  },
   banner:{
     type:DataTypes.STRING,
     allowNull:true
   },
-  like:DataTypes.STRING,
-  meta_description:DataTypes.STRING,
-  meta_title:DataTypes.STRING,
+  like:{
+    type:DataTypes.STRING,
+    allowNull:true
+  },
+  meta_description:{
+    type:DataTypes.STRING,
+    allowNull:true
+  },
+  meta_title:{
+    type:DataTypes.STRING,
+    allowNull:true
+  },
   slug:DataTypes.STRING,
   deleted:{
     type:DataTypes.BOOLEAN,

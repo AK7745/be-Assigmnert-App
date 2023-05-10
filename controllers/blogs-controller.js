@@ -10,8 +10,16 @@ export const createBlog = async (req, res) => {
       meta_description,
       meta_title,
     } = req.body;
+
+    if (!title || !description) {
+      return res.status(400).json({
+        success: false,
+        error: "Title and description are required fields",
+      });
+    }
     const metaImagePath = req.files["meta_img"][0]["path"];
     const bannerImagePath = req.files["banner"][0]["path"];
+
     const blog = await Blog.create({
       title,
       meta_img: metaImagePath,
@@ -22,8 +30,9 @@ export const createBlog = async (req, res) => {
       meta_description,
       meta_title,
     });
+
     const slug = formatTitleAndId(blog);
-    const createSlug = await Blog.update(
+    await Blog.update(
       { slug },
       {
         where: {
@@ -31,38 +40,58 @@ export const createBlog = async (req, res) => {
         },
       }
     );
+
     const fetchBlog = await Blog.findOne({
       where: {
         id: blog.id,
         deleted: false,
       },
     });
+
     res.status(201).json({
+      success: true,
       message: "Blog created successfully",
       data: fetchBlog,
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).json(error);
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      error: "Internal server error",
+    });
   }
 };
+
 
 export const getSingleBlog = async (req, res) => {
   try {
     const id = req.params.id;
-    console.log(id);
+
     const blog = await Blog.findOne({
       where: { id, deleted: false },
     });
+
+    if (!blog) {
+      return res.status(404).json({
+        success: false,
+        error: "Blog not found",
+      });
+    }
+
     res.status(200).json({
-      message: 'Blog Fetched successfully',
-      data:blog
+      success: true,
+      message: "Blog fetched successfully",
+      data: blog,
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).json(error.message);
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      error: "Internal server error",
+    });
   }
 };
+
 
 export const updateBlogInfo = async (req, res) => {
   try {
@@ -77,7 +106,7 @@ export const updateBlogInfo = async (req, res) => {
     });
 
     if (rowsAffected === 0) {
-      return res.status(404).json({ error: "Blog not found" });
+      return res.status(404).json({ success: false, error: "Blog not found" });
     }
 
     const updatedBlog = await Blog.findOne({
@@ -87,14 +116,17 @@ export const updateBlogInfo = async (req, res) => {
       },
     });
 
-    res
-      .status(200)
-      .json({ message: "Successfully updated", data: updatedBlog });
+    res.status(200).json({
+      success: true,
+      message: "Blog updated successfully",
+      data: updatedBlog,
+    });
   } catch (error) {
-    console.log(error);
-    res.status(500).json(error);
+    console.error(error);
+    res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
+
 
 
 
@@ -102,7 +134,7 @@ export const softDeleteBlog = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const blog = await Blog.update(
+    const [rowsAffected] = await Blog.update(
       { deleted: true },
       {
         where: {
@@ -111,35 +143,39 @@ export const softDeleteBlog = async (req, res) => {
       }
     );
 
-    if (!blog) {
-      return res.status(404).json({ error: "Blog not found" });
+    if (rowsAffected === 0) {
+      return res.status(404).json({ success: false, error: "Blog not found" });
     }
 
     res.status(200).json({
-      message: "blog deleted successfully",
+      success: true,
+      message: "Blog deleted successfully",
     });
   } catch (error) {
-    res.status(500).json(error);
+    console.error(error);
+    res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
 
+
 export const getAllBlog = async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1; 
-    const limit = parseInt(req.query.limit) || 10; 
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
 
-    const offset = (page - 1) * limit; 
+    const offset = (page - 1) * limit;
 
     const { count, rows } = await Blog.findAndCountAll({
       where: {
         deleted: false,
       },
-      order: [["createdAt", "ASC"]], 
+      order: [["createdAt", "ASC"]],
       limit,
       offset,
     });
 
     res.status(200).json({
+      success: true,
       message: "All blogs fetched successfully",
       data: {
         totalItems: count,
@@ -151,7 +187,8 @@ export const getAllBlog = async (req, res) => {
   } catch (error) {
     console.error("Error while fetching details:", error);
     res.status(500).json({
-      message: "Internal server error",
+      success: false,
+      error: "Internal server error",
     });
   }
 };
@@ -176,8 +213,16 @@ export const deleteAllBlogs = async (req, res) => {
 export const updateBanner = async (req, res) => {
   try {
     const bannerImagePath = req.file.path;
-    console.log(bannerImagePath);
     const id = req.params.id;
+    const check=await Blog.findOne({
+      where:{
+        id,
+        deleted: false
+      }
+    })
+    if(!check){
+      return res.status(404).json({success:false, message: "Blog Not Found" });
+    }
     const banner = await Blog.update(
       { banner: bannerImagePath },
       {
@@ -189,11 +234,15 @@ export const updateBanner = async (req, res) => {
       }
     );
     res.status(200).json({
+      success: true,
       message: "Banner updated successfully",
-      data: banner,
+      
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.log(error);
+    res.status(500).json({ 
+      success: false,
+      message: error.message });
   }
 };
 
@@ -202,6 +251,15 @@ export const updateMetaImage = async (req, res) => {
     const metaImagePath = req.file.path;
     console.log(metaImagePath);
     const id = req.params.id;
+    const check=await Blog.findOne({
+      where:{
+        id,
+        deleted: false
+      }
+    })
+    if(!check){
+      return res.status(404).json({success:false, message: "Blog Not Found" });
+    }
     const banner = await Blog.update(
       { meta_img: metaImagePath },
       {
@@ -213,10 +271,14 @@ export const updateMetaImage = async (req, res) => {
       }
     );
     res.status(200).json({
+      success: true,
       message: "Meta image updated successfully",
-      data: banner,
+      
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ 
+      success: false,
+      message: error.message 
+    });
   }
 };

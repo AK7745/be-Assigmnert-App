@@ -4,7 +4,7 @@ import { createDays,deleteAllDays,getDays} from '../controllers/days-controller.
 const daysRoutes=express.Router()
 
 daysRoutes.post('/create-days',createDays)
-daysRoutes.get('/get-days',getDays)
+daysRoutes.get('/get-all-days',getDays)
 daysRoutes.delete('/delete-days',deleteAllDays)
 
 
