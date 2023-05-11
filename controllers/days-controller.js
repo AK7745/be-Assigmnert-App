@@ -22,7 +22,35 @@ export const createDays = async (req, res) => {
       res.status(500).json({ error: error.message });
     }
   };
-
+  export const getSingleDay = async (req, res) => {
+    try {
+      const id = req.params.id;
+  
+      const day = await Days.findOne({
+        where: { id, deleted: false },
+      });
+  
+      if (!day) {
+        return res.status(404).json({
+          success: false,
+          error: "days not found",
+        });
+      }
+  
+      res.status(200).json({
+        success: true,
+        message: "days fetched successfully",
+        data: day,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        success: false,
+        error: "Internal server error",
+      });
+    }
+  };
+  
   export const deleteAllDays=async (req,res)=>{
     try {
         

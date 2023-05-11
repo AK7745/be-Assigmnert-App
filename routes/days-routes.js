@@ -5,6 +5,7 @@ const daysRoutes=express.Router()
 
 daysRoutes.post('/create-days',createDays)
 daysRoutes.get('/get-all-days',getDays)
+daysRoutes.get('/get-single-days/:id',getDays)
 daysRoutes.delete('/delete-days',deleteAllDays)
 
 
