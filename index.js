@@ -12,7 +12,14 @@ import relations from "./entities/relations.js";
 import levelRoutes from "./routes/levels-routes.js";
 relations()
 const app=express();
-app.use(cors());
+// app.options('*', cors());  
+app.use(cors({ origin: true, credentials: true }));
+
+// app.use((req, res, next) => {
+//     res.header('Access-Control-Allow-Origin', '*');
+//     next();
+//   });
+
 app.use(bodyParser.urlencoded({}))
 app.use(bodyParser.json({limit:"50mb",
 extended: true,

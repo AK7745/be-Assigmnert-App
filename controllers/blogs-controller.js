@@ -17,12 +17,13 @@ export const createBlog = async (req, res) => {
         error: "Title and description are required fields",
       });
     }
-    const metaImagePath = req.files["meta_img"][0]["path"];
-    const bannerImagePath = req.files["banner"][0]["path"];
+
+    const metaImagePath = req?.files?.meta_img?.[0]?.path
+    const bannerImagePath = req?.files?.banner?.[0]?.path
 
     const blog = await Blog.create({
       title,
-      meta_img: metaImagePath,
+      meta_img: metaImagePath, 
       description,
       author_name,
       banner: bannerImagePath,
@@ -30,7 +31,7 @@ export const createBlog = async (req, res) => {
       meta_description,
       meta_title,
     });
-
+  
     const slug = formatTitleAndId(blog);
     await Blog.update(
       { slug },
