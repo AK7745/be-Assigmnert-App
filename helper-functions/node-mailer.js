@@ -19,8 +19,8 @@ const sendFormEmail = async (formData) => {
         <h1>Form Submission</h1>
         // <p>Name: ${formData.name}</p>
         // <p>Email: ${formData.email}</p>
-        // <p>Phone: ${formData.subject}</p>
-        // <p>Message: ${formData.message}</p>
+        // <p>Phone: ${formData.phoneNumber}</p>
+        // <p>Message: ${formData.description}</p>
       `
     };
 

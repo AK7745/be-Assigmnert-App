@@ -11,3 +11,4 @@ export const DATABASENAME=process.env.DATABASENAME
 export const DB_USER_NAME=process.env.DB_USER_NAME
 export const DB_PASS=process.env.DB_PASS
 export const NODE_MAILER_SERVICE=process.env.NODE_MAILER_SERVICE
+export const MAIL_SECRET_KEY=process.env.MAIL_SECRET_KEY

@@ -1,7 +1,8 @@
 import sgMail from '@sendgrid/mail'
+import { MAIL_SECRET_KEY } from '../constants.js';
 
 export const mailSender=async (detail)=>{
-  sgMail.setApiKey('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')
+  sgMail.setApiKey(MAIL_SECRET_KEY)
       const { name, email } = detail;
 
 const msg = {

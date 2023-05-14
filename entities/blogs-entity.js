@@ -7,7 +7,7 @@ const Blog = sequelize.define('Blog', {
     type:DataTypes.STRING,
     allowNull:true
   },
-  description:DataTypes.STRING,
+  description:DataTypes.TEXT('medium'),
   author_name:{
     type:DataTypes.STRING,
     allowNull:true
