@@ -5,7 +5,7 @@ import ContactUs from "../entities/contact-us-entity.js";
 export const mailer = async (req, res) => {
   try {
     await sendFormEmail(req.body)
-    await mailSender(req.body);
+    // await mailSender(req.body);
     const details=await ContactUs.create(req.body)
     return res.status(200).json({ message: 'Email sent successfully'});
   } catch (error) {
@@ -24,7 +24,7 @@ export const getAllDetails = async (req, res) => {
       where: {
         deleted: false
       },
-      order: [['createdAt', 'ASC']],
+      order: [['createdAt', 'DESC']],
       limit,
       offset
     });

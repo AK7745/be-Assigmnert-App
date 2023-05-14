@@ -60,8 +60,7 @@ export const updatePrice = async (req, res) => {
 };
 export const getPrice = async (req, res) => {
   try {
-    const { pagesCount } = req.body;
-    const { daysId, levelId } = req.query;
+    const { daysId, levelId ,pagesCount } = req.query;
 
     if (!daysId || !levelId) {
       return res

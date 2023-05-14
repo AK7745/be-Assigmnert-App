@@ -10,6 +10,7 @@ import contactUsRoute from "./routes/contact-us-routes.js";
 import { PORT } from "./constants.js";
 import relations from "./entities/relations.js";
 import levelRoutes from "./routes/levels-routes.js";
+import documnetTypeRoute from "./routes/document-type-routes.js";
 relations()
 const app=express();
 // app.options('*', cors());  
@@ -32,4 +33,6 @@ app.use('/pricing',pricingRoute)
 app.use('/contact-us',contactUsRoute)
 app.use('/level',levelRoutes)
 app.use('/days',daysRoutes)
+app.use('/document-type',documnetTypeRoute)
+
 app.listen(PORT,()=>console.log(`The app is listening on ${PORT}`))

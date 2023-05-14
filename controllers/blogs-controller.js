@@ -17,7 +17,6 @@ export const createBlog = async (req, res) => {
         error: "Title and description are required fields",
       });
     }
-
     const metaImagePath = req?.files?.meta_img?.[0]?.path
     const bannerImagePath = req?.files?.banner?.[0]?.path
 
@@ -98,7 +97,8 @@ export const updateBlogInfo = async (req, res) => {
   try {
     const { id } = req.params;
     const data = req.body;
-
+    const bannerImagePath = req?.file?.path;    
+    data.banner=bannerImagePath
     const [rowsAffected] = await Blog.update(data, {
       where: {
         id,
@@ -123,7 +123,7 @@ export const updateBlogInfo = async (req, res) => {
       data: updatedBlog,
     });
   } catch (error) {
-    console.error(error);
+    console.log(error);
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
@@ -161,29 +161,26 @@ export const softDeleteBlog = async (req, res) => {
 
 export const getAllBlog = async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
+    // const page = parseInt(req.query.page) || 1;
+    // const limit = parseInt(req.query.limit) || 10;
 
-    const offset = (page - 1) * limit;
+    // const offset = (page - 1) * limit;
 
-    const { count, rows } = await Blog.findAndCountAll({
+   const blogs = await Blog.findAll({
       where: {
         deleted: false,
       },
-      order: [["createdAt", "ASC"]],
-      limit,
-      offset,
+      order: [["createdAt", "DESC"]],
+      // limit,
+      // offset,
     });
 
     res.status(200).json({
       success: true,
       message: "All blogs fetched successfully",
       data: {
-        totalItems: count,
-        totalPages: Math.ceil(count / limit),
-        currentPage: page,
-        items: rows,
-      },
+        items:blogs
+      }
     });
   } catch (error) {
     console.error("Error while fetching details:", error);
