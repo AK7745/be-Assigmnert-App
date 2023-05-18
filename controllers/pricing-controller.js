@@ -61,7 +61,6 @@ export const updatePrice = async (req, res) => {
 export const getPrice = async (req, res) => {
   try {
     const { daysId, levelId ,pagesCount } = req.query;
-
     if (!daysId || !levelId) {
       return res
         .status(400)
@@ -78,8 +77,9 @@ export const getPrice = async (req, res) => {
       return res.status(200).json({
         success: true,
         message: "Data fetched successfully",
-        data: { perPagePrice, totalPrice },
+        data: { perPagePrice,totalPrice },
       });
+      
     }
 
     res.status(200).json({

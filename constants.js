@@ -11,4 +11,4 @@ export const DATABASENAME=process.env.DATABASENAME || 'testing'
 export const DB_USER_NAME=process.env.DB_USER_NAME || 'root'
 export const DB_PASS=process.env.DB_PASS || 'root'
 export const NODE_MAILER_SERVICE=process.env.NODE_MAILER_SERVICE
-export const MAIL_SECRET_KEY=process.env.MAIL_SECRET_KEY
+export const MAIL_SECRET_KEY=process.env.MAIL_SECRET_KEY 

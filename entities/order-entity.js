@@ -2,37 +2,39 @@ import {DataTypes } from 'sequelize';
 import { sequelize } from '../database/database.js';
 
 const Order = sequelize.define('Order', {
-  title: DataTypes.STRING,
-  meta_img: {
+  documentId: DataTypes.INTEGER,
+  subjectId: {
+    type:DataTypes.INTEGER,
+    allowNull:false
+  },
+  daysId:{
+    type:DataTypes.INTEGER,
+    allowNull:false
+  },
+  levelId:{
+    type:DataTypes.INTEGER,
+    allowNull:false
+  },
+  name:{
+    type:DataTypes.STRING,
+    allowNull:false
+  },
+  email:{
+    type:DataTypes.STRING,
+    allowNull:false
+  },
+  phoneNumber:{
+    type:DataTypes.STRING,
+    allowNull:false
+  },
+  country:{
     type:DataTypes.STRING,
     allowNull:true
   },
-  description:DataTypes.TEXT('medium'),
-  author_name:{
-    type:DataTypes.STRING,
-    allowNull:true
-  },
-  banner:{
-    type:DataTypes.STRING,
-    allowNull:true
-  },
-  like:{
-    type:DataTypes.STRING,
-    allowNull:true
-  },
-  meta_description:{
-    type:DataTypes.STRING,
-    allowNull:true
-  },
-  meta_title:{
-    type:DataTypes.STRING,
-    allowNull:true
-  },
-  slug:DataTypes.STRING,
   deleted:{
     type:DataTypes.BOOLEAN,
     defaultValue:false
 }
 });
 
-export {Blog}
+export {Order}
