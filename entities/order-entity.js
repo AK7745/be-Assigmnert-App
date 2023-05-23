@@ -2,10 +2,13 @@ import {DataTypes } from 'sequelize';
 import { sequelize } from '../database/database.js';
 
 const Order = sequelize.define('Order', {
-  documentId: DataTypes.INTEGER,
+  documentId: {
+    type:DataTypes.INTEGER,
+    allowNull:false  
+  },
   subjectId: {
     type:DataTypes.INTEGER,
-    allowNull:false
+    allowNull:true
   },
   daysId:{
     type:DataTypes.INTEGER,

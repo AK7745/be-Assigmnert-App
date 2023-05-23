@@ -11,15 +11,17 @@ import { PORT } from "./constants.js";
 import relations from "./entities/relations.js";
 import levelRoutes from "./routes/levels-routes.js";
 import documnetTypeRoute from "./routes/document-type-routes.js";
+import orderRouter from "./routes/order-routes.js";
+import subjectRoutes from "./routes/subject-routes.js";
+
+
+
+
 relations()
-const app=express();
-// app.options('*', cors());  
+const app=express();  
 app.use(cors({ origin: true, credentials: true }));
 
-// app.use((req, res, next) => {
-//     res.header('Access-Control-Allow-Origin', '*');
-//     next();
-//   });
+
 
 app.use(bodyParser.urlencoded({}))
 app.use(bodyParser.json({limit:"50mb",
@@ -34,5 +36,7 @@ app.use('/contact-us',contactUsRoute)
 app.use('/level',levelRoutes)
 app.use('/days',daysRoutes)
 app.use('/document-type',documnetTypeRoute)
+app.use('/order',orderRouter)
+app.use('/subject',subjectRoutes)
 
 app.listen(PORT,()=>console.log(`The app is listening on ${PORT}`))
