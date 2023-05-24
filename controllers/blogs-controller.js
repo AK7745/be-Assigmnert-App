@@ -65,10 +65,10 @@ export const createBlog = async (req, res) => {
 
 export const getSingleBlog = async (req, res) => {
   try {
-    const id = req.params.id;
-
+    const slug = req.params.slug;
+console.log(slug);
     const blog = await Blog.findOne({
-      where: { id, deleted: false },
+      where: { slug, deleted: false },
     });
 
     if (!blog) {

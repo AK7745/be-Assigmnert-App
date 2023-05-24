@@ -8,7 +8,7 @@ const blogRoute=express.Router()
 blogRoute.post('/create-blog',upload.fields([{ name: 'meta_img', maxCount: 1 }, { name: 'banner', maxCount: 1 }]), createBlog);
 blogRoute.put('/update-blog-description/:id',upload.single('banner'),updateBlogInfo);
 blogRoute.get('/get-all-blogs',getAllBlog)
-blogRoute.get('/get-single-blog/:id',getSingleBlog)
+blogRoute.get('/get-single-blog/:slug',getSingleBlog)
 blogRoute.delete('/delete-blog/:id', softDeleteBlog);
 blogRoute.delete('/complete-delete-all-blogs',deleteAllBlogs)
 blogRoute.put('/update-banner/:id',upload.single('banner'),updateBanner)
