@@ -13,6 +13,7 @@ import levelRoutes from "./routes/levels-routes.js";
 import documnetTypeRoute from "./routes/document-type-routes.js";
 import orderRouter from "./routes/order-routes.js";
 import subjectRoutes from "./routes/subject-routes.js";
+import serviceRoute from "./routes/service-routes.js";
 
 
 
@@ -38,5 +39,6 @@ app.use('/days',daysRoutes)
 app.use('/document-type',documnetTypeRoute)
 app.use('/order',orderRouter)
 app.use('/subject',subjectRoutes)
+app.use('/service',serviceRoute)
 
 app.listen(PORT,()=>console.log(`The app is listening on ${PORT}`))

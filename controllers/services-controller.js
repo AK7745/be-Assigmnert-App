@@ -1,57 +1,50 @@
-import { Blog } from "../entities/blogs-entity.js";
+import { Service } from "../entities/services-entity.js";
 
-export const createBlog = async (req, res) => {
+export const createService = async (req, res) => {
   try {
-    const {
-      title,
-      description,
-      author_name,
-      like,
-      meta_description,
-      meta_title,
-    } = req.body;
+    const { title, description, author_name, meta_description, meta_title } =
+      req.body;
 
-    if (!title || !description) {
+    if (!description || !title) {
       return res.status(400).json({
         success: false,
         error: "Title and description are required fields",
       });
     }
     const metaImagePath = req?.files?.meta_img?.[0]?.path;
-    const bannerImagePath = req?.files?.banner?.[0]?.path;
+    const imagePath = req?.files?.image?.[0]?.path;
 
-    const blog = await Blog.create({
+    const service = await Service.create({
       title,
       meta_img: metaImagePath,
       description,
       author_name,
-      banner: bannerImagePath,
-      like,
+      image: imagePath,
       meta_description,
       meta_title,
     });
 
-    const slug = formatTitleAndId(blog?.title, blog?.id);
-    await Blog.update(
+    const slug = formatTitleAndId(service?.title, service?.id);
+    await Service.update(
       { slug },
       {
         where: {
-          id: blog.id,
+          id: service.id,
         },
       }
     );
 
-    const fetchBlog = await Blog.findOne({
+    const fetchService = await Service.findOne({
       where: {
-        id: blog.id,
+        id: service.id,
         deleted: false,
       },
     });
 
     res.status(201).json({
       success: true,
-      message: "Blog created successfully",
-      data: fetchBlog,
+      message: "Service created successfully",
+      data: fetchService,
     });
   } catch (error) {
     console.error(error);
@@ -62,25 +55,24 @@ export const createBlog = async (req, res) => {
   }
 };
 
-export const getSingleBlog = async (req, res) => {
+export const getSingleService = async (req, res) => {
   try {
     const slug = req.params.slug;
-    console.log(slug);
-    const blog = await Blog.findOne({
+    const service = await Service.findOne({
       where: { slug, deleted: false },
     });
 
-    if (!blog) {
+    if (!service) {
       return res.status(404).json({
         success: false,
-        error: "Blog not found",
+        error: "Service not found",
       });
     }
 
     res.status(200).json({
       success: true,
-      message: "Blog fetched successfully",
-      data: blog,
+      message: "Service fetched successfully",
+      data: service,
     });
   } catch (error) {
     console.error(error);
@@ -91,15 +83,17 @@ export const getSingleBlog = async (req, res) => {
   }
 };
 
-export const updateBlogInfo = async (req, res) => {
+export const updateService = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = req.body;
-    const bannerImagePath = req?.file?.path;
-    data.banner = bannerImagePath;
+    let data = req.body;
+    const metaImagePath = req?.files?.meta_img?.[0]?.path;
+    const imagePath = req?.files?.image?.[0]?.path;
+    data.image = imagePath;
+    data.meta_img = metaImagePath;
     if (data.title) {
       const slug = formatTitleAndId(data?.title, id);
-      await Blog.update(
+      await Service.update(
         { slug },
         {
           where: {
@@ -109,7 +103,7 @@ export const updateBlogInfo = async (req, res) => {
         }
       );
     }
-    const [rowsAffected] = await Blog.update(data, {
+    const [rowsAffected] = await Service.update(data, {
       where: {
         id,
         deleted: false,
@@ -117,10 +111,12 @@ export const updateBlogInfo = async (req, res) => {
     });
 
     if (rowsAffected === 0) {
-      return res.status(404).json({ success: false, error: "Blog not found" });
+      return res
+        .status(404)
+        .json({ success: false, error: "Service not found" });
     }
 
-    const updatedBlog = await Blog.findOne({
+    const updatedService = await Service.findOne({
       where: {
         id,
         deleted: false,
@@ -129,8 +125,8 @@ export const updateBlogInfo = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "Blog updated successfully",
-      data: updatedBlog,
+      message: "Service updated successfully",
+      data: updatedService,
     });
   } catch (error) {
     console.log(error);
@@ -138,11 +134,11 @@ export const updateBlogInfo = async (req, res) => {
   }
 };
 
-export const softDeleteBlog = async (req, res) => {
+export const softDeleteService = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const [rowsAffected] = await Blog.update(
+    const [rowsAffected] = await Service.update(
       { deleted: true },
       {
         where: {
@@ -152,12 +148,12 @@ export const softDeleteBlog = async (req, res) => {
     );
 
     if (rowsAffected === 0) {
-      return res.status(404).json({ success: false, error: "Blog not found" });
+      return res.status(404).json({ success: false, error: "Service not found" });
     }
 
     res.status(200).json({
       success: true,
-      message: "Blog deleted successfully",
+      message: "Service deleted successfully",
     });
   } catch (error) {
     console.error(error);
@@ -165,14 +161,14 @@ export const softDeleteBlog = async (req, res) => {
   }
 };
 
-export const getAllBlog = async (req, res) => {
+export const getAllService = async (req, res) => {
   try {
     // const page = parseInt(req.query.page) || 1;
     // const limit = parseInt(req.query.limit) || 10;
 
     // const offset = (page - 1) * limit;
 
-    const blogs = await Blog.findAll({
+    const services = await Service.findAll({
       where: {
         deleted: false,
       },
@@ -183,9 +179,9 @@ export const getAllBlog = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "All blogs fetched successfully",
+      message: "All Services fetched successfully",
       data: {
-        items: blogs,
+        items: services,
       },
     });
   } catch (error) {
@@ -251,40 +247,40 @@ export const updateBanner = async (req, res) => {
   }
 };
 
-export const updateMetaImage = async (req, res) => {
-  try {
-    const metaImagePath = req.file.path;
-    console.log(metaImagePath);
-    const id = req.params.id;
-    const check = await Blog.findOne({
-      where: {
-        id,
-        deleted: false,
-      },
-    });
-    if (!check) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Blog Not Found" });
-    }
-    const banner = await Blog.update(
-      { meta_img: metaImagePath },
-      {
-        where: {
-          id,
-          deleted: false,
-        },
-        returning: true,
-      }
-    );
-    res.status(200).json({
-      success: true,
-      message: "Meta image updated successfully",
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
+// export const updateMetaImage = async (req, res) => {
+//   try {
+//     const metaImagePath = req.file.path;
+//     console.log(metaImagePath);
+//     const id = req.params.id;
+//     const check = await Blog.findOne({
+//       where: {
+//         id,
+//         deleted: false,
+//       },
+//     });
+//     if (!check) {
+//       return res
+//         .status(404)
+//         .json({ success: false, message: "Blog Not Found" });
+//     }
+//     const banner = await Blog.update(
+//       { meta_img: metaImagePath },
+//       {
+//         where: {
+//           id,
+//           deleted: false,
+//         },
+//         returning: true,
+//       }
+//     );
+//     res.status(200).json({
+//       success: true,
+//       message: "Meta image updated successfully",
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       message: error.message,
+//     });
+//   }
+// };
