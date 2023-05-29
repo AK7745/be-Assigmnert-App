@@ -26,3 +26,36 @@ export const createSubject = async (req, res) => {
     });
   }
 };
+
+
+export const getAllSubjects = async (req, res) => {
+  try {
+    // const page = parseInt(req.query.page) || 1;
+    // const limit = parseInt(req.query.limit) || 10;
+
+    // const offset = (page - 1) * limit;
+
+    const subjects = await Subject.findAll({
+      where: {
+        deleted: false,
+      },
+      order: [["createdAt", "DESC"]],
+      // limit,
+      // offset,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "All Subjects fetched successfully",
+      data: {
+        items: subjects,
+      },
+    });
+  } catch (error) {
+    console.error("Error while fetching details:", error);
+    res.status(500).json({
+      success: false,
+      error: "Internal server error",
+    });
+  }
+};
