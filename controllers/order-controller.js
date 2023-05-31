@@ -107,3 +107,30 @@ export const GetAllOrders=async (req, res) => {
 
   });
 }
+
+export const deleteOrder = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const [rowsAffected] = await Order.update(
+      { deleted: true },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+
+    if (rowsAffected === 0) {
+      return res.status(404).json({ success: false, error: "Order not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Order deleted successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
+};
