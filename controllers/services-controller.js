@@ -2,7 +2,7 @@ import { Service } from "../entities/services-entity.js";
 
 export const createService = async (req, res) => {
   try {
-    const { title, description, author_name, meta_description, meta_title } =
+    const { title, description, author_name, meta_description, meta_title,img_alt } =
       req.body;
 
     if (!description || !title) {
@@ -22,6 +22,7 @@ export const createService = async (req, res) => {
       image: imagePath,
       meta_description,
       meta_title,
+      img_alt
     });
 
     const slug = formatTitleAndId(service?.title, service?.id);
@@ -163,18 +164,18 @@ export const softDeleteService = async (req, res) => {
 
 export const getAllService = async (req, res) => {
   try {
-    // const page = parseInt(req.query.page) || 1;
-    // const limit = parseInt(req.query.limit) || 10;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
 
-    // const offset = (page - 1) * limit;
+    const offset = (page - 1) * limit;
 
     const services = await Service.findAll({
       where: {
         deleted: false,
       },
       order: [["createdAt", "DESC"]],
-      // limit,
-      // offset,
+      limit,
+      offset,
     });
 
     res.status(200).json({

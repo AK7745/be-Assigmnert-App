@@ -1,4 +1,6 @@
+import axios from "axios";
 import { Blog } from "../entities/blogs-entity.js";
+import { CAPCHA_URL } from "../constants.js";
 
 export const createBlog = async (req, res) => {
   try {
@@ -9,6 +11,7 @@ export const createBlog = async (req, res) => {
       like,
       meta_description,
       meta_title,
+      img_alt,
     } = req.body;
 
     if (!title || !description) {
@@ -29,6 +32,7 @@ export const createBlog = async (req, res) => {
       like,
       meta_description,
       meta_title,
+      img_alt,
     });
 
     const slug = formatTitleAndId(blog?.title, blog?.id);
@@ -91,12 +95,15 @@ export const getSingleBlog = async (req, res) => {
   }
 };
 
-export const updateBlogInfo = async (req, res) => {
+export const updateBlog = async (req, res) => {
   try {
     const { id } = req.params;
     const data = req.body;
-    const bannerImagePath = req?.file?.path;
+    const metaImagePath = req?.files?.meta_img?.[0]?.path;
+    const bannerImagePath = req?.files?.banner?.[0]?.path;
+
     data.banner = bannerImagePath;
+    data.meta_img = metaImagePath;
     if (data.title) {
       const slug = formatTitleAndId(data?.title, id);
       await Blog.update(
@@ -167,18 +174,18 @@ export const softDeleteBlog = async (req, res) => {
 
 export const getAllBlog = async (req, res) => {
   try {
-    // const page = parseInt(req.query.page) || 1;
-    // const limit = parseInt(req.query.limit) || 10;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
 
-    // const offset = (page - 1) * limit;
+    const offset = (page - 1) * limit;
 
     const blogs = await Blog.findAll({
       where: {
         deleted: false,
       },
       order: [["createdAt", "DESC"]],
-      // limit,
-      // offset,
+      limit,
+      offset,
     });
 
     res.status(200).json({
@@ -213,78 +220,80 @@ export const deleteAllBlogs = async (req, res) => {
   }
 };
 
-export const updateBanner = async (req, res) => {
-  try {
-    const bannerImagePath = req.file.path;
-    const id = req.params.id;
-    const check = await Blog.findOne({
-      where: {
-        id,
-        deleted: false,
-      },
-    });
-    if (!check) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Blog Not Found" });
-    }
-    const banner = await Blog.update(
-      { banner: bannerImagePath },
-      {
-        where: {
-          id,
-          deleted: false,
-        },
-        returning: true,
-      }
-    );
-    res.status(200).json({
-      success: true,
-      message: "Banner updated successfully",
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
 
-export const updateMetaImage = async (req, res) => {
-  try {
-    const metaImagePath = req.file.path;
-    console.log(metaImagePath);
-    const id = req.params.id;
-    const check = await Blog.findOne({
-      where: {
-        id,
-        deleted: false,
-      },
-    });
-    if (!check) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Blog Not Found" });
-    }
-    const banner = await Blog.update(
-      { meta_img: metaImagePath },
-      {
-        where: {
-          id,
-          deleted: false,
-        },
-        returning: true,
-      }
-    );
-    res.status(200).json({
-      success: true,
-      message: "Meta image updated successfully",
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
+
+// export const updateBanner = async (req, res) => {
+//   try {
+//     const bannerImagePath = req.file.path;
+//     const id = req.params.id;
+//     const check = await Blog.findOne({
+//       where: {
+//         id,
+//         deleted: false,
+//       },
+//     });
+//     if (!check) {
+//       return res
+//         .status(404)
+//         .json({ success: false, message: "Blog Not Found" });
+//     }
+//     const banner = await Blog.update(
+//       { banner: bannerImagePath },
+//       {
+//         where: {
+//           id,
+//           deleted: false,
+//         },
+//         returning: true,
+//       }
+//     );
+//     res.status(200).json({
+//       success: true,
+//       message: "Banner updated successfully",
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({
+//       success: false,
+//       message: error.message,
+//     });
+//   }
+// };
+
+// export const updateMetaImage = async (req, res) => {
+//   try {
+//     const metaImagePath = req.file.path;
+//     console.log(metaImagePath);
+//     const id = req.params.id;
+//     const check = await Blog.findOne({
+//       where: {
+//         id,
+//         deleted: false,
+//       },
+//     });
+//     if (!check) {
+//       return res
+//         .status(404)
+//         .json({ success: false, message: "Blog Not Found" });
+//     }
+//     const banner = await Blog.update(
+//       { meta_img: metaImagePath },
+//       {
+//         where: {
+//           id,
+//           deleted: false,
+//         },
+//         returning: true,
+//       }
+//     );
+//     res.status(200).json({
+//       success: true,
+//       message: "Meta image updated successfully",
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       message: error.message,
+//     });
+//   }
+// };

@@ -1,40 +1,42 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
 
-const Service = sequelize.define("Service", {
-  title: {
+const Info = sequelize.define("Info", {
+  name: {
     type: DataTypes.STRING,
     allowNull: true,
   },
-  meta_img: {
+  email: {
     type: DataTypes.STRING,
     allowNull: true,
   },
-  description: {
-    type: DataTypes.TEXT("medium"),
-    allowNull: false,
-  },
-  author_name: {
+  contact: {
     type: DataTypes.STRING,
     allowNull: true,
   },
-  image: {
+  address: {
     type: DataTypes.STRING,
     allowNull: true,
   },
-  meta_description: {
+  facebooklink: {
     type: DataTypes.STRING,
     allowNull: true,
   },
-  meta_title: {
+  instagramlink: {
     type: DataTypes.STRING,
     allowNull: true,
   },
-  slug: DataTypes.STRING,
-  img_alt:{
-    type:DataTypes.STRING,
-    allowNull:true,
-    default:null
+  linkedin: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  whatsapplink: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  twitterlink: {
+    type: DataTypes.STRING,
+    allowNull: true,
   },
   deleted: {
     type: DataTypes.BOOLEAN,
@@ -42,4 +44,4 @@ const Service = sequelize.define("Service", {
   },
 });
 
-export { Service };
+export default Info;

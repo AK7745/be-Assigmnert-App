@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import { connectDB } from "./database/database.js";
 import userRoute from "./routes/user-routes.js";
 import blogRoute from "./routes/blog-routes.js";
+import infoRoute from "./routes/info-routes.js";
 import pricingRoute from "./routes/pricing-routes.js";
 import daysRoutes from "./routes/days-routes.js";
 import contactUsRoute from "./routes/contact-us-routes.js";
@@ -40,5 +41,6 @@ app.use('/document-type',documnetTypeRoute)
 app.use('/order',orderRouter)
 app.use('/subject',subjectRoutes)
 app.use('/service',serviceRoute)
+app.use('/info',infoRoute)
 
 app.listen(PORT,()=>console.log(`The app is listening on ${PORT}`))

@@ -28,6 +28,11 @@ const Blog = sequelize.define('Blog', {
     type:DataTypes.STRING,
     allowNull:true
   },
+  img_alt:{
+    type:DataTypes.STRING,
+    allowNull:true,
+    default:null
+  },
   slug:DataTypes.STRING,
   deleted:{
     type:DataTypes.BOOLEAN,

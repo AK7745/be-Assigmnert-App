@@ -1,3 +1,5 @@
+import Days from "../entities/days.js";
+import Level from "../entities/level.js";
 import Pricing from "../entities/pricing.js";
 import { Op } from "sequelize";
 
@@ -100,7 +102,8 @@ try {
   const pricing= await Pricing.findAll({
     where:{
       deleted: false,
-    }
+    },
+    include:[Days,Level]
   })
   res.status(200).json({
     message: "Pricing fetched successfully",
