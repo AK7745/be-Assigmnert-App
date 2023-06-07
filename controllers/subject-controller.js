@@ -47,9 +47,7 @@ export const getAllSubjects = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "All Subjects fetched successfully",
-      data: {
-        items: subjects,
-      },
+      data:subjects
     });
   } catch (error) {
     console.error("Error while fetching details:", error);
