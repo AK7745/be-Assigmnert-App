@@ -42,7 +42,7 @@ app.use('/order',orderRouter)
 app.use('/subject',subjectRoutes)
 app.use('/service',serviceRoute)
 app.use('/info',infoRoute)
-app.use('/',(req,res)=>{
-    res.send('server is running')
-})
+// app.use('/',(req,res)=>{
+//     res.send('server is running')
+// })
 app.listen(PORT,()=>console.log(`The app is listening on ${PORT}`))

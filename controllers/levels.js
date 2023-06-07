@@ -3,6 +3,7 @@ import Level from "../entities/level.js";
 export const createLevel = async (req, res) => {
   try {
     const level = await Level.create(req.body);
+    console.log('it came here');
     res.status(200).json({
       message: "level created successfully",
       data: level,
