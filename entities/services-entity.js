@@ -36,6 +36,14 @@ const Service = sequelize.define("Service", {
     allowNull:true,
     default:null
   },
+  sub_description:{
+    type:DataTypes.STRING,
+    allowNull:true,
+  },
+  sub_description:{
+    type:DataTypes.STRING,
+    allowNull:true,
+  },
   deleted: {
     type: DataTypes.BOOLEAN,
     defaultValue: false,

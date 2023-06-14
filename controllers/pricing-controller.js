@@ -11,7 +11,18 @@ export const createPrice = async (req, res) => {
         .status(400)
         .json({ success: false, error: "Missing required fields" });
     }
-
+    const check = await Pricing.findOne({
+      where: {
+        daysId,
+        levelId,
+      },
+    });
+    if (check) {
+    return res.status(200).json({
+        success: true,
+        message: "record already exist ",
+      });
+    }
     const Price = await Pricing.create({
       price,
       daysId,
@@ -62,7 +73,7 @@ export const updatePrice = async (req, res) => {
 };
 export const getPrice = async (req, res) => {
   try {
-    const { daysId, levelId ,pagesCount } = req.query;
+    const { daysId, levelId, pagesCount } = req.query;
     if (!daysId || !levelId) {
       return res
         .status(400)
@@ -79,9 +90,8 @@ export const getPrice = async (req, res) => {
       return res.status(200).json({
         success: true,
         message: "Data fetched successfully",
-        data: { perPagePrice,totalPrice },
+        data: { perPagePrice, totalPrice },
       });
-      
     }
 
     res.status(200).json({
@@ -94,23 +104,21 @@ export const getPrice = async (req, res) => {
 
     res.status(500).json({ success: false, error: "Internal server error" });
   }
-
 };
 
-export const getAllPricing=async (req, res) => {
-try {
-  const pricing= await Pricing.findAll({
-    where:{
-      deleted: false,
-    },
-    include:[Days,Level]
-  })
-  res.status(200).json({
-    message: "Pricing fetched successfully",
-  data: pricing
-  })
-} catch (error) {
-  res.status(500).json({ error: error.message });
-}
-
-}
+export const getAllPricing = async (req, res) => {
+  try {
+    const pricing = await Pricing.findAll({
+      where: {
+        deleted: false,
+      },
+      include: [Days, Level],
+    });
+    res.status(200).json({
+      message: "Pricing fetched successfully",
+      data: pricing,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

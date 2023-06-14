@@ -12,6 +12,7 @@ export const createBlog = async (req, res) => {
       meta_description,
       meta_title,
       img_alt,
+      sub_description
     } = req.body;
 
     if (!title || !description) {
@@ -33,6 +34,7 @@ export const createBlog = async (req, res) => {
       meta_description,
       meta_title,
       img_alt,
+      sub_description
     });
 
     const slug = formatTitleAndId(blog?.title, blog?.id);

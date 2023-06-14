@@ -34,6 +34,10 @@ const Blog = sequelize.define('Blog', {
     default:null
   },
   slug:DataTypes.STRING,
+  sub_description:{
+    type:DataTypes.STRING,
+    allowNull:true,
+  },
   deleted:{
     type:DataTypes.BOOLEAN,
     defaultValue:false

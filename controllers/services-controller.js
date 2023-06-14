@@ -2,7 +2,7 @@ import { Service } from "../entities/services-entity.js";
 
 export const createService = async (req, res) => {
   try {
-    const { title, description, author_name, meta_description, meta_title,img_alt } =
+    const { title, description, author_name, meta_description, meta_title,img_alt,sub_description } =
       req.body;
 
     if (!description || !title) {
@@ -22,7 +22,8 @@ export const createService = async (req, res) => {
       image: imagePath,
       meta_description,
       meta_title,
-      img_alt
+      img_alt,
+      sub_description
     });
 
     const slug = formatTitleAndId(service?.title, service?.id);
