@@ -1,34 +1,23 @@
-name: CI/CD Pipeline
-
+name: CI
 on:
   push:
-    branches:
-      - main
-
+    branches: [ main ]
+  workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 18
-      
-      - name: Install dependencies
-        run: npm install
-      
-      - name: Deploy to EC2
-        uses: ErenKrt/ssh-push@main
-        with:
-          host: 3.110.77.103 
-          username: ec2-user
-          private_key: ${{ secrets.KEY }}
-          scripts: |
-            cd /home/ec2-user/be-Assigmnert-App
-            npm install
-            npm run build
-            pm2 restart index.js 
+      - uses: actions/checkout@v3
+      - name: Deploy in EC2
+        env:
+            PRIVATE_KEY: ${{ secrets.KEY  }}
+            HOSTNAME : 3.110.77.103
+            USER_NAME : ec2-user
+            
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+          
+          '
+            
+            
