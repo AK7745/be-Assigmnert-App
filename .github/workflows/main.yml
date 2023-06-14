@@ -27,7 +27,7 @@ jobs:
           host: 3.108.140.82 
           username: ec2-user
           private_key: ${{ secrets.KEY }}
-          script: |
+          scripts: |
             cd /home/ec2-user/be-Assigmnert-App
             npm install
             npm run build
