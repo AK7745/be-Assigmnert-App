@@ -26,7 +26,7 @@ jobs:
         with:
           host: 3.108.140.82 
           username: ec2-user
-          key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDrCb3FALqCTc7xKBTJRXEjslhybi2q9KChmnF52XrUk8FKxjDgxwB2GABbkTclyVRhDn+FGLGy4cf15/HJlxrU+4+gpidrv0HZaxa5idMXYxV3Qbv/e+irzBXEmDEWKaVOdrKVWAC5qEik1WFRq9cfaDF6UMZwx0+Ivo1Jnmm9dLd8qX2E8ZMGRv7a8oK0asH6sD0fSGIzfKbggRW4LSKybMfwctQl/PbC/mi01Ws0i/3Y7RcIArWnQafcRfCwlLntdNBWVhPidZlSXwxPEzBKHQN3X2Z3KH0SGDj6Rxh/N+hKvSpqAy/SNU9fNUL/Oll2O5bkQLumuHhKWqamJOEMSYUnF8Qii/Xz1dOc9eNW5NdnEQDUk4yD9LF6PvMK9bjUP2WpMAl9C0iN7IMzBBxBdq7JD+ZzT2aKJJEqAL1VibOJQyhGwLiYHWyfvECeSFgdO0DY3Vh4H1i1lFTCMh7uUW2TY/tzRNkyEgpx4AZGOTmia6ILy9+/YPJIZ/1BdJU= ec2-user@ip-172-31-4-115.ap-south-1.compute.internal
+          key: ${{ secrets.KEY }}
           script: |
             cd /home/ec2-user/be-Assigmnert-App
             npm install
