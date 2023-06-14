@@ -1,23 +1,37 @@
-name: CI
+name: Deploy to EC2
+
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch:
+    branches:
+      - main
+
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - name: Deploy in EC2
-        env:
-            PRIVATE_KEY: ${{ secrets.KEY  }}
-            HOSTNAME : 3.110.77.103
-            USER_NAME : ec2-user
-            
-        run: |
-          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
           
-          '
-            
-            
+      - name: Install SSH client
+        run: sudo apt-get install -y openssh-client
+        
+      - name: Add SSH private key
+        uses: webfactory/ssh-agent@v0.5.0
+        with:
+          ssh-private-key: ${{ secrets.KEY }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Deploy to EC2
+        run: |
+          ssh-keyscan -H 3.108.140.82 >> ~/.ssh/known_hosts
+          ssh -o StrictHostKeyChecking=no -i ${{ secrets.KEY }} ec2-user@ec2-3-108-140-82.ap-south-1.compute.amazonaws.com 'cd /home/ec2-user/be-Assigmnert-App && git pull && npm install && pm2 restart index.js'
+
+
