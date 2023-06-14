@@ -1,0 +1,34 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+      
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: 3.108.140.82 
+          username: ec2-user
+          key: ${{ secrets.SSH_PRIVATE_KEY }} # Add your SSH private key as a secret in the GitHub repository's settings
+          script: |
+            cd /home/ec2-user/be-Assigmnert-App
+            npm install
+            npm run build
+            pm2 restart index.js 
