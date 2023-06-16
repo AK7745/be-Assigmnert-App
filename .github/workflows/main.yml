@@ -23,7 +23,7 @@ jobs:
       - name: Install SSH client
         run: sudo apt-get install -y openssh-client
 
-      - name: Deploy using ssh
+        - name: Deploy using ssh
         uses: appleboy/ssh-action@master
         with:
           host: "3.108.140.82"
@@ -32,14 +32,14 @@ jobs:
           script: |
             mkdir -p ~/be-Assigmnert-App
             cd ~/be-Assigmnert-App
-            git clone git@github.com:AK7745/be-Assigmnert-App.git .
-            git checkout main
-            git pull origin main
-            git status
+            git init
+            git remote add origin git@github.com:AK7745/be-Assigmnert-App.git
+            git fetch origin main
+            git reset --hard origin/main
             npm ci
-            pm2 delete Namespace default || true
             pm2 start index.js
             pm2 save
+      
 
       - name: Restart Nginx
         run: sudo systemctl restart nginx
