@@ -16,22 +16,19 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
-
-      - name: Install dependencies
-        run: npm ci
+          node-version: '18'
 
       - name: Add SSH key to known hosts
         run: ssh-keyscan -H 3.108.140.82 >> $HOME/.ssh/known_hosts
 
       - name: SSH into EC2 and pull code
-        run: ssh -o StrictHostKeyChecking=no ec2-user@3.108.140.82 'cd /path/to/app && git pull'
+        run: ssh -o StrictHostKeyChecking=no ec2-user@3.108.140.82 'cd /home/ec2-user/be-Assigmnert-App && git pull'
 
       - name: Install production dependencies
-        run: ssh -o StrictHostKeyChecking=no ec2-user@3.108.140.82 'cd /path/to/app && npm ci'
+        run: ssh -o StrictHostKeyChecking=no ec2-user@3.108.140.82 'cd /home/ec2-user/be-Assigmnert-App && npm ci'
 
       - name: Restart application using PM2
-        run: ssh -o StrictHostKeyChecking=no ec2-user@3.108.140.82 'pm2 restart index.js'
+        run: ssh -o StrictHostKeyChecking=no ec2-user@3.108.140.82 'cd /home/ec2-user/be-Assigmnert-App && pm2 restart index.js'
 
       - name: Restart Nginx
         run: sudo systemctl restart nginx
