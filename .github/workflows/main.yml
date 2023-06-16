@@ -1,5 +1,3 @@
-name: Deploy to EC2
-
 on:
   push:
     branches:
@@ -12,6 +10,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          ref: main
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
@@ -21,18 +21,30 @@ jobs:
       - name: Install SSH client
         run: sudo apt-get install -y openssh-client
 
-      - name: Add SSH private key
-        uses: webfactory/ssh-agent@v0.5.0
+      - name: SSH to EC2 and create directory
+        uses: appleboy/ssh-action@master
         with:
-          ssh-private-key: ${{ secrets.KEY }}
+          host: "3.108.140.82"
+          username: "ec2-user"
+          key: ${{ secrets.KEY }}
+          script: |
+            rm -rf ~/be-Assigmnent-App  # Delete existing directory
+            mkdir -p ~/be-Assigmnent-App
+            git clone https://github.com/AK7745/be-Assigmnert-App.git ~/be-Assigmnent-App  # Clone into a new directory
+            cd ~/be-Assigmnent-App
+            git pull
+            git status
+            npm i
+            pm2 kill 
+            pm2 list
+            cd ~/.pm2/logs
+            rm index-error.log
+            cd ~/be-Assigmnent-App
+            pm2 start index.js
+            pm2 list
+            pm2 status
+            sudo systemctl restart nginx
+   
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Deploy to EC2
-        run: |
-          ssh-keyscan -H 3.108.140.82 >> $HOME/.ssh/known_hosts
-          ssh -o StrictHostKeyChecking=no ec2-user@ec2-3-108-140-82.ap-south-1.compute.amazonaws.com 'cd /home/ec2-user/be-Assigmnert-App && npm ci && pm2 restart index.js'
-
-      - name: Restart Nginx
-        run: sudo systemctl restart nginx
+            
+            
