@@ -37,6 +37,9 @@ jobs:
             npm i
             pm2 kill 
             pm2 list
+            cd ~/.pm2/logs
+            rm index-error.log
+            cd ~/be-Assigmnent-App
             pm2 start index.js
             pm2 list
             pm2 status
