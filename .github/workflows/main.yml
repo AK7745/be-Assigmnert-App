@@ -23,10 +23,10 @@ jobs:
       - name: Install SSH client
         run: sudo apt-get install -y openssh-client
 
-      - name: Add SSH private key
-        uses: webfactory/ssh-agent@v0.5.0
+      - name: Deploy using ssh
+        uses: appleboy/ssh-action@master
         with:
-          ssh-private-key: ${{ secrets.KEY }}
+          key: ${{ secrets.KEY }}
           script: |
             cd ~/home/ec2-user/be-Assigmnert-App
             git pull origin master
