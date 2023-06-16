@@ -28,8 +28,7 @@ jobs:
           username: "ec2-user"
           key: ${{ secrets.KEY }}
           script: |
+            rm -rf ~/be-Assigmnent-App  # Delete existing directory
             mkdir -p ~/be-Assigmnent-App
-            git clone https://github.com/AK7745/be-Assigmnert-App.git .
+            git clone https://github.com/AK7745/be-Assigmnert-App.git ~/be-Assigmnent-App  # Clone into a new directory
 
-      - name: Restart Nginx
-        run: sudo systemctl restart nginx
