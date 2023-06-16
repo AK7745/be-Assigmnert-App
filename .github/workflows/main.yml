@@ -43,7 +43,7 @@ jobs:
             pm2 start index.js
             pm2 list
             pm2 status
-            # sudo systemctl restart nginx
+            sudo systemctl restart nginx
    
 
             
