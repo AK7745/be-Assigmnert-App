@@ -18,7 +18,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '18'
+          node-version: '14'
 
       - name: Install SSH client
         run: sudo apt-get install -y openssh-client
@@ -30,19 +30,16 @@ jobs:
           username: "ec2-user"
           key: ${{ secrets.KEY }}
           script: |
-            mkdir be-Assigmnert-App
-            cd ~/home/ec2-user/be-Assigmnert-App
+            mkdir -p ~/be-Assigmnert-App
+            cd ~/be-Assigmnert-App
             git clone git@github.com:AK7745/be-Assigmnert-App.git .
-            git pull origin master
+            git checkout main
+            git pull origin main
             git status
-            npm i
-            pm2 -f start index.js
-
-
-      # - name: Deploy to EC2
-      #   run: |
-      #     ssh-keyscan -H 3.108.140.82 >> $HOME/.ssh/known_hosts
-      #     ssh -o StrictHostKeyChecking=no ec2-user@ec2-3-108-140-82.ap-south-1.compute.amazonaws.com 'cd /home/ec2-user/be-Assigmnert-App && npm ci && pm2 restart index.js'
+            npm ci
+            pm2 delete Namespace default || true
+            pm2 start index.js
+            pm2 save
 
       - name: Restart Nginx
         run: sudo systemctl restart nginx
