@@ -14,3 +14,8 @@ export const NODE_MAILER_SERVICE=process.env.NODE_MAILER_SERVICE
 export const MAIL_SECRET_KEY=process.env.MAIL_SECRET_KEY 
 export const CAPCHA_SECRET_KEY=process.env.CAPCHA_SECRET_KEY
 export const CAPCHA_URL=process.env.CAPCHA_URL
+export const NODE_ENV=process.env.NODE_ENV
+export const SSL_CERT_PATH=process.env.SSL_CERT_PATH
+export const SSL_KEY_PATH=process.env.SSL_KEY_PATH
+
+
