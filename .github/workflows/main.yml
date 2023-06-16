@@ -26,6 +26,8 @@ jobs:
       - name: Deploy using ssh
         uses: appleboy/ssh-action@master
         with:
+          host: "3.108.140.82"
+          username: "ec2-user"
           key: ${{ secrets.KEY }}
           script: |
             cd ~/home/ec2-user/be-Assigmnert-App
