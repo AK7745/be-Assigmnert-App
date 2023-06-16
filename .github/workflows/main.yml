@@ -30,11 +30,13 @@ jobs:
           username: "ec2-user"
           key: ${{ secrets.KEY }}
           script: |
+            mkdir be-Assigmnert-App
             cd ~/home/ec2-user/be-Assigmnert-App
+            git clone git@github.com:AK7745/be-Assigmnert-App.git .
             git pull origin master
             git status
-            npm install --only=prod
-            pm2 restart index.js
+            npm i
+            pm2 -f start index.js
 
 
       # - name: Deploy to EC2
