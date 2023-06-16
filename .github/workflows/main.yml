@@ -32,7 +32,7 @@ jobs:
 
       - name: Clone the code
         run: |
-          ssh -i ${{ secrets.KEY }} ec2-user@3.108.140.82 "git clone https://github.com/AK7745/be-Assigmnert-App.git ~/be-Assigmnent-App"
+          ssh -i ${{ secrets.KEY }} ec2-user@3.108.140.82 "git clone git@github.com:AK7745/be-Assigmnert-App.git ~/be-Assigmnent-App"
 
       - name: Restart Nginx
         run: sudo systemctl restart nginx
