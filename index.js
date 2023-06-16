@@ -46,20 +46,6 @@ app.use('/info',infoRoute)
 // app.use('/',(req,res)=>{
 //     res.send('server is running')
 // })
-// if (NODE_ENV === "production") {
-//     // Production environment - Enable HTTPS
-//     const options = {
-//       key: fs.readFileSync(SSL_KEY_PATH),
-//       cert: fs.readFileSync(SSL_CERT_PATH),
-//     };
-  
-//     const server = https.createServer(options, app);
-//     server.listen(PORT, () => {
-//       console.log(`HTTPS server is running on ${PORT}`);
-//     });
-//   } else {
-//     // Development environment - Enable HTTP
-//     app.listen(PORT, () => {
-//       console.log(`HTTP server is running on ${PORT}`);
-//     });
-//   }
+    app.listen(PORT, () => {
+      console.log(`HTTP server is running on ${PORT}`)})
+    
