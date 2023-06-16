@@ -35,6 +35,12 @@ jobs:
             git pull
             git status
             npm i
-            
+            pm2 kill 
+            pm2 list
+            pm2 start index.js
+            pm2 list
+            pm2 status 
+            pm2 logs
+
             
             
