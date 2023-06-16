@@ -32,7 +32,7 @@ jobs:
       - name: Deploy to EC2
         run: |
           ssh-keyscan -H 3.108.140.82 >> $HOME/.ssh/known_hosts
-          ssh -o StrictHostKeyChecking=no ec2-user@ec2-3-108-140-82.ap-south-1.compute.amazonaws.com 'cd /home/ec2-user/be-Assigmnert-App && npm ci && pm2 restart index.js'
+          ssh -o StrictHostKeyChecking=no ec2-user@ec2-3-108-140-82.ap-south-1.compute.amazonaws.com 'cd /home/ec2-user/be-Assigmnert-App && npm ci && pm2 start index.js'
 
       - name: Restart Nginx
         run: sudo systemctl restart nginx
