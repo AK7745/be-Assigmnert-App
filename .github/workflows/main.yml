@@ -39,8 +39,9 @@ jobs:
             pm2 list
             pm2 start index.js
             pm2 list
-            pm2 status 
-            pm2 logs
+            pm2 status
+            sudo systemctl restart nginx
+   
 
             
             
