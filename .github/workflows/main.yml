@@ -23,23 +23,17 @@ jobs:
       - name: Install SSH client
         run: sudo apt-get install -y openssh-client
 
-      - name: Deploy using ssh
+      - name: ssh to ec2
         uses: appleboy/ssh-action@master
         with:
           host: "3.108.140.82"
           username: "ec2-user"
           key: ${{ secrets.KEY }}
-          script: |
-            mkdir -p ~/be-Assigmnert-App
-            cd ~/be-Assigmnert-App
-            git clone https://github.com/AK7745/be-Assigmnert-App.git .
-            git pull
-            git status
-            # git reset --hard origin/main
-            # npm ci
-            # pm2 start index.js
-            # pm2 save
+
+      - name: Creating & Cloning the code
+        run: |
+          mkdir ~/be-Assigmnent-App
+          cd ~/be-Assigmnent-App
+          git clone https://github.com/AK7745/be-Assigmnert-App.git .
       
 
-      - name: Restart Nginx
-        run: sudo systemctl restart nginx
