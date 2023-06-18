@@ -22,8 +22,8 @@ import fs from "fs";
 
 relations()
 const app=express();  
-app.use(cors({ origin: true, credentials: true }));
-
+// app.use(cors({ origin: true, credentials: true }));
+app.use(cors('*'))
 
 
 app.use(bodyParser.urlencoded({}))
