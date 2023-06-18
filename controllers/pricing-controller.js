@@ -20,7 +20,7 @@ export const createPrice = async (req, res) => {
     if (check) {
     return res.status(200).json({
         success: true,
-        message: "record already exist.",
+        message: "record already exist...",
       });
     }
     const Price = await Pricing.create({
