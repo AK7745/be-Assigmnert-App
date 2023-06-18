@@ -12,7 +12,7 @@ export const createBlog = async (req, res) => {
       meta_description,
       meta_title,
       img_alt,
-      sub_description
+      sub_description,
     } = req.body;
 
     if (!title || !description) {
@@ -21,9 +21,10 @@ export const createBlog = async (req, res) => {
         error: "Title and description are required fields",
       });
     }
-    const metaImagePath = req?.files?.meta_img?.[0]?.path;
-    const bannerImagePath = req?.files?.banner?.[0]?.path;
-
+    const metaImagePath = req?.files?.meta_img?.[0]?.location;
+    console.log("metaImagePath", req?.files?.meta_img);
+    const bannerImagePath = req?.files?.banner?.[0]?.location;
+    console.log("bannerImagePath", req?.files?.banner);
     const blog = await Blog.create({
       title,
       meta_img: metaImagePath,
@@ -34,7 +35,7 @@ export const createBlog = async (req, res) => {
       meta_description,
       meta_title,
       img_alt,
-      sub_description
+      sub_description,
     });
 
     const slug = formatTitleAndId(blog?.title, blog?.id);
@@ -221,8 +222,6 @@ export const deleteAllBlogs = async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 };
-
-
 
 // export const updateBanner = async (req, res) => {
 //   try {

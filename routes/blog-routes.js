@@ -1,6 +1,6 @@
 import express  from "express";
 import { createBlog, getSingleBlog, softDeleteBlog,getAllBlog, deleteAllBlogs, updateBlog } from "../controllers/blogs-controller.js";
-import { upload } from "../middlewares/multer.js";
+import  upload  from "../middlewares/multer.js";
 import { authenticate } from "../middlewares/auth.js";
 
 const blogRoute=express.Router()
