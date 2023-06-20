@@ -1,5 +1,5 @@
 import express  from "express";
-import  upload  from "../middlewares/multer.js";
+import  {upload}  from "../middlewares/multer.js";
 import { authenticate } from "../middlewares/auth.js";
 import { createService, getAllService, getSingleService, softDeleteService, updateService } from "../controllers/services-controller.js";
 

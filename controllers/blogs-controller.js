@@ -21,9 +21,13 @@ export const createBlog = async (req, res) => {
         error: "Title and description are required fields",
       });
     }
-    const metaImagePath = req?.files?.meta_img?.[0]?.location;
+    // const metaImagePath = req?.files?.meta_img?.[0]?.location;
+    const metaImagePath = req?.files?.meta_img?.[0]?.path;
+
     console.log("metaImagePath", req?.files?.meta_img);
-    const bannerImagePath = req?.files?.banner?.[0]?.location;
+    // const bannerImagePath = req?.files?.banner?.[0]?.location;
+    const bannerImagePath = req?.files?.banner?.[0]?.path;
+
     console.log("bannerImagePath", req?.files?.banner);
     const blog = await Blog.create({
       title,
